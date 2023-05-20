@@ -52,14 +52,9 @@ def home(response):
             for user in searchedQueryIDs:
                 searchQueryRantsMatchingUsername.append(list(userRants.objects.filter(username_id=user)))
             searchQueryRantsMatchingUsername = [item for sublist in searchQueryRantsMatchingUsername for item in sublist]
-            # print(searchQueryRantsMatchingUsername)
 
             searchedQueryRants = list(userRants.objects.filter(rantText__contains=searchedQuery))
-            # print(searchedQueryRants)
-
             searchQueryUsersAndRants = list(set(searchQueryRantsMatchingUsername + searchedQueryRants))
-            # print("\n\n" + str(searchQueryUsersAndRants))
-            print("we are reaching here")
 
             return render(response, "main/home.html", {"userInfo":userInfo, "userRants":rants, "userRantsinDictionary":sortedUserRantsInDictionary, "users":users, "searchedRants":searchQueryUsersAndRants})
 

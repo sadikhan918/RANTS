@@ -1,0 +1,23 @@
+{% extends 'main/base.html'%}
+{% block title%}List{% endblock %}
+
+{% block content%} 
+    <h1>{{users}}</h1>
+    <ul>
+        {% for user in users %}
+            <li>{{user.password}}</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <ul>
+        {% for rant in userRants %}
+            <li>{{rant.rantText}}</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <ul>
+        {% for rant in userRants%} 
+            <li>{{rant.username}} says {{rant.rantText}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

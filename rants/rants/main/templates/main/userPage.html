@@ -1,0 +1,68 @@
+{% extends "main/base.html" %}
+{% block title %}
+{{userInfo.username}}'s page
+{% endblock %}
+
+{% block content %}
+<div class="columnContainer">
+    <div class="shortBar">
+        <div class="listBarContainer">
+           <h1 class="shortBarHeader display-2">ANGRY USERS</h1>
+        </div>
+        <br>
+        <div class="listUsers">
+           <table class="table">
+              <tr>
+                 <th scope="row">User</th>
+                 <th># of RANTS</th>
+              </tr>
+              {% for key, value in userRantsinDictionary.items %}
+                 {% if value > 0 %}
+                    <tr>
+                       <td>{{key}}</td>
+                       <td>{{ value }}</td>
+                    </tr>
+                 {% endif %}
+              {% endfor %}
+           </table>
+        </div>
+     </div>
+    <div class="middleBar">
+        {% if currentUserRants %}
+            {% for rant in currentUserRants reversed %}
+            <div class="middleBarContainer">
+                <div class="rantHeader">
+                    <span class="rantHeaderText">
+                        @{{rant.username}}
+                    </span>
+                </div>
+                <div class="rantBody">
+                    <div class="rantBodyText">
+                        {{rant.rantText}}
+                    </div>
+                </div>
+                <div class="rantFooter">
+                    <div class="rantDate">RANTED on {{rant.rantDate}}</div>
+                    {% if rant.username_id == userInfo.id %}
+                    <form method="POST" action="#" class="form deleteRant">
+                        {% csrf_token %}
+                        <div class="deleteRant">
+                            <input type="hidden" name="deleteRant" value="{{ rant.id }}">
+                            <button type="submit" name="deleteRantButton" class="btn btn-danger">Delete Rant</button>
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div>GET SOME RANTS!</div>
+        {% endif %}
+    </div>
+    <div class="shortBar">
+        <div>
+            hello 3
+        </div>
+    </div>
+</div>
+{% endblock %}

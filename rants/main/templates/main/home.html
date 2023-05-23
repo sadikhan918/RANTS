@@ -27,10 +27,9 @@
       {% if userInfo.is_authenticated %}
       <div class="middleBarContainer">
          <div class="rantHeader">
-            <span class="rantHeaderText">
-               @{{userInfo.username}}
-            </span>
-            <button type="button" class="btn btn-outline-success">Success</button>
+            <div class="rantHeaderText">
+               <p>@{{userInfo.username}}</p>
+            </div>
          </div>
          <form method="POST" action="#" class="form">
             {% csrf_token %}
@@ -49,9 +48,32 @@
          {% for rant in userRants reversed %}
             <div class="middleBarContainer">
                <div class="rantHeader">
-                  <span class="rantHeaderText">
-                     @{{rant.username}}
-                  </span>
+                  <div class="rantHeaderText">
+                     <p>@{{rant.username}}</p>
+                  </div>
+                  <div class="followButtonContainer">
+                     {% if userInfo.is_authenticated %}
+                        {% if userInfo.id != rant.username_id %}
+                           {% if rant.username_id not in listOfFollowedUsers %}
+                              <form method="POST" action="#" class="form">
+                                 {% csrf_token %}
+                                 <input type="hidden" name="followUser" value="{{ rant.username_id }}">
+                                 <button type="submit" name="followUserButton" class="btn btn-outline-success followButton">
+                                    <p>Follow</p>
+                                 </button>
+                              </form>
+                           {% else %}
+                              <form method="POST" action="#" class="form">
+                                 {% csrf_token %}
+                                 <input type="hidden" name="unfollowUser" value="{{ rant.username_id }}">
+                                 <button type="submit" name="unfollowUserButton" class="btn btn-success followButton">
+                                    <p>Followed</p>
+                                 </button>
+                              </form>
+                           {% endif %}
+                        {% endif%}
+                     {% endif %}
+                  </div>
                </div>
                <div class="rantBody">
                   <div class="rantBodyText">

@@ -18,3 +18,11 @@ class userRants(models.Model):
 
     def __str__(self):
         return '{} {} {}'.format(self.username, self.rantText, self.rantDate)
+    
+
+class userFollowing(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE, related_name="mainUser")
+    followingList = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followedUser")
+
+    def __str__(self):
+        return '{} {}'.format(self.username, self.followingList)

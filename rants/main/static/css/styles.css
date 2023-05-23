@@ -1,3 +1,7 @@
+/* body {
+    background-color: #43464B;
+} */
+
 .columnContainer {
     float: left;
     width: 100%;
@@ -56,16 +60,24 @@
     border-width: 2px;
     border-color: #B52525;
     height: 40px;
+    width: 100%;
+    display: flex;
 }
 
 .rantHeaderText {
-    padding: 7px 7px;
-    text-align: center;
-    vertical-align: middle;
     display: flex;
-    justify-content: left;
-
+    width: min-content;
+    height: 100%;
+    padding-left: 10px;
 }
+
+.rantHeaderText > p {
+    margin: auto;
+}
+
+/* .rantHeaderText > button {
+    height: 75%;
+} */
 
 .rantBody {
     display: block;
@@ -129,4 +141,27 @@
     width: 70%;
     height: auto;
     margin: auto;
+}
+
+.followButtonContainer {
+    display: flex;
+    align-self: center;
+    margin-left: auto;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.followButton {
+    height: 30px;
+    text-align: center;
+    vertical-align: center;
+    margin: auto;
+    /* font-size: 16px; */
+}
+
+.followButton > p {
+    margin: auto;
+    height: 100%;
+    vertical-align: middle;
+    line-height: 100%;
 }

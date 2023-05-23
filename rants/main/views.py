@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from main.models import users, userRants
+from main.models import users, userRants, userFollowing
 from .forms import registerUser, makeRant
 from django.contrib.auth.models import User
 import datetime
@@ -30,6 +30,7 @@ def home(response):
         userRantsinDictionary[user.username] = userRants.objects.filter(username_id=user.id).count()
     sortedUserRantsInDictionary = dict(sorted(userRantsinDictionary.items(), key=lambda x:x[1], reverse=True))
     print(response.POST)
+    listOfFollowedUsers =  list(userFollowing.objects.filter(username=userInfo.id).values_list('followingList', flat=True))
 
     if response.method == "POST":
         if response.POST.get("rantTextArea"):
@@ -57,7 +58,25 @@ def home(response):
             searchQueryUsersAndRants = list(set(searchQueryRantsMatchingUsername + searchedQueryRants))
 
             return render(response, "main/home.html", {"userInfo":userInfo, "userRants":rants, "userRantsinDictionary":sortedUserRantsInDictionary, "users":users, "searchedRants":searchQueryUsersAndRants})
+        
+        if response.POST.get("followUser"):
+            userToFollowID = int(response.POST.get("followUser"))
+            if userToFollowID not in listOfFollowedUsers:
+                print("we are here?")
+                t = userFollowing(username = userInfo, followingList = User.objects.get(id=userToFollowID))
+                t.save()
+                # return render(response, "main/home.html", {"userInfo":userInfo, "userRants":rants, "userRantsinDictionary":sortedUserRantsInDictionary, "users":users, "listOfFollowedUsers":listOfFollowedUsers})
+                return redirect('/home/')
+            
+        if response.POST.get("unfollowUser"):
+            userToUnfollowID = int(response.POST.get("unfollowUser"))
+            print("we are here")
+            if userToUnfollowID in listOfFollowedUsers:
+                print("we are here abcd")
+                t = userFollowing.objects.get(username = userInfo.id, followingList = userToUnfollowID)
+                t.delete()
+                return redirect('/home/')
 
 
-    
-    return render(response, "main/home.html", {"userInfo":userInfo, "userRants":rants, "userRantsinDictionary":sortedUserRantsInDictionary, "users":users})
+
+    return render(response, "main/home.html", {"userInfo":userInfo, "userRants":rants, "userRantsinDictionary":sortedUserRantsInDictionary, "users":users, "listOfFollowedUsers":listOfFollowedUsers})

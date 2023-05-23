@@ -65,14 +65,11 @@ def home(response):
                 print("we are here?")
                 t = userFollowing(username = userInfo, followingList = User.objects.get(id=userToFollowID))
                 t.save()
-                # return render(response, "main/home.html", {"userInfo":userInfo, "userRants":rants, "userRantsinDictionary":sortedUserRantsInDictionary, "users":users, "listOfFollowedUsers":listOfFollowedUsers})
                 return redirect('/home/')
             
         if response.POST.get("unfollowUser"):
             userToUnfollowID = int(response.POST.get("unfollowUser"))
-            print("we are here")
             if userToUnfollowID in listOfFollowedUsers:
-                print("we are here abcd")
                 t = userFollowing.objects.get(username = userInfo.id, followingList = userToUnfollowID)
                 t.delete()
                 return redirect('/home/')
